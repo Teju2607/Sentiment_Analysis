@@ -3,7 +3,7 @@ import pickle
 import gzip
 import os
 
-CLASSES = {0: "negative", 4: "positive"}
+CLASSES = {0: "negative", 2: "neutral", 4: "positive"}
 
 # Load trained model
 @st.cache_resource
@@ -19,7 +19,7 @@ model = load_model()
 
 # Streamlit UI
 st.title("Sentiment Analysis")
-st.markdown("Enter a sentence to predict whether the sentiment is **positive** or **negative**.")
+st.markdown("Enter a sentence to predict whether the sentiment is *positive, **neutral, or **negative*.")
 
 text_input = st.text_area("Input text:", height=150)
 
@@ -38,7 +38,13 @@ if st.button("Predict"):
                 Predicted Sentiment: {sentiment.capitalize()}
                 </div>
                 """, unsafe_allow_html=True)
+            elif sentiment == "neutral":
+                st.markdown(f"""
+                <div style="background-color:#e6e6e6;padding:10px;border-radius:5px;color:#000;font-weight:bold;">
+                Predicted Sentiment: {sentiment.capitalize()}
+                </div>
+                """, unsafe_allow_html=True)
             else:
-                st.success(f"Predicted Sentiment: **{sentiment.capitalize()}**")
+                st.success(f"Predicted Sentiment: *{sentiment.capitalize()}*")
         except Exception as e:
             st.error(f"Prediction error: {str(e)}")
